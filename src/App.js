@@ -49,6 +49,24 @@ class App extends Component {
         }));
     };
 
+    componentDidMount() {
+        const contactsStorage = localStorage.getItem('contacts');
+        const contactsStorageParsed = JSON.parse(contactsStorage);
+
+        if (contactsStorageParsed) {
+            this.setState({ contacts: contactsStorageParsed });
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.contacts !== prevState.contacts) {
+            localStorage.setItem(
+                'contacts',
+                JSON.stringify(this.state.contacts),
+            );
+        }
+    }
+
     render() {
         const normalizedFilter = this.state.filter.toLowerCase();
         const filteredContacts = this.state.contacts.filter(contact =>
