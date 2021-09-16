@@ -17,6 +17,24 @@ class App extends Component {
         filter: '',
     };
 
+    componentDidMount() {
+        const contactsStorage = localStorage.getItem('contacts');
+        const contactsStorageParsed = JSON.parse(contactsStorage);
+
+        if (contactsStorageParsed) {
+            this.setState({ contacts: contactsStorageParsed });
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.contacts !== prevState.contacts) {
+            localStorage.setItem(
+                'contacts',
+                JSON.stringify(this.state.contacts),
+            );
+        }
+    }
+
     addNewContact = data => {
         const normilizedData = data.name.toLowerCase();
         const dublicate = this.state.contacts.find(
@@ -48,24 +66,6 @@ class App extends Component {
             ),
         }));
     };
-
-    componentDidMount() {
-        const contactsStorage = localStorage.getItem('contacts');
-        const contactsStorageParsed = JSON.parse(contactsStorage);
-
-        if (contactsStorageParsed) {
-            this.setState({ contacts: contactsStorageParsed });
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.contacts !== prevState.contacts) {
-            localStorage.setItem(
-                'contacts',
-                JSON.stringify(this.state.contacts),
-            );
-        }
-    }
 
     render() {
         const normalizedFilter = this.state.filter.toLowerCase();
